@@ -20,17 +20,17 @@ class MagazineluizaSpider(scrapy.Spider):
             except:
                 reviews_score = None
             try:
-                old_price = product.css("p.sc-kpDqfm.efxPhd.sc-gEkIjz.jmNQlo::text").get().replace('R$\xa0','')
+                old_price = product.css("p.sc-kpDqfm.efxPhd.sc-gEkIjz.jmNQlo::text").get().replace('R$\xa0','').replace('.','').replace(',','.')
             except:
                 old_price = None
 
             yield {
                 'product_brand':product.css("a::attr(data-brand)").get(),
-                'product_name':product.css("h2.sc-dcjTxL.jXuKxj::text").get(),
+                'product_name':product.css("h2.sc-dcjTxL.hXdXkD::text").get(),
                 'reviews_score':reviews_score,
                 'reviews_quantity':reviews_quantity if reviews_score else None,
                 'old_price':old_price,
-                'new_price':product.css("p.sc-kpDqfm.eCPtRw.sc-bOhtcR.dOwMgM::text").get().replace('R$\xa0','')
+                'new_price':product.css("p.sc-kpDqfm.eCPtRw.sc-bOhtcR.dOwMgM::text").get().replace('R$\xa0','').replace('.','').replace(',','.')
             }
 
         if self.page_count < self.max_page:

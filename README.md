@@ -2,4 +2,7 @@
 (em construção)
 
 Para rodar o web scrapping:
-``scrapy crawl magazineluiza -o ../../data/data_extracted.jsonl``
+``scrapy crawl magazineluiza -o ../data/data_extracted.jsonl``
+
+Para rodar o tratamento:
+``python transformacao/tratamento.py``
