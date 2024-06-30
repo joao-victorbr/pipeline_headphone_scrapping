@@ -11,9 +11,19 @@ df = pd.read_sql_query('SELECT * FROM magazineluiza_items', conn)
 # Fechar conexão com o banco de dados
 conn.close()
 
+renamming = {
+    'product_brand':'Marca',
+    'product_name':'Nome do produto',
+    'reviews_score':'Pontuação de reviews',
+    'reviews_quantity':'Número de reviews',
+    'old_price':'Preço antigo',
+    'new_price':'Preço atual',
+}
+df_renamed = df.rename(columns=renamming)
+
 # Título da aplicação
 st.title('Pesquisa de mercado - Headphones no Magazineluiza')
-st.subheader('KPIs principais da pesquisa')
+st.subheader('KPIs principais da pesquisa',divider='rainbow')
 
 # # Exibir df inicial em tela
 # st.write(df)
@@ -21,37 +31,43 @@ st.subheader('KPIs principais da pesquisa')
 col1, col2, col3 = st.columns(3)
 
 # KPI 1: Número total de registros
-total_items = df.shape[0]
-col1.metric(label = 'Número total de registros', value = total_items)
+total_items = df_renamed.shape[0]
+col1.metric(label = '**Número total de registros**', value = total_items)
 
 # KPI 2: Número de marcas:
-brands_quantity = df['product_brand'].nunique()
-col2.metric(label = 'Quantidade de marcas', value = brands_quantity)
+brands_quantity = df_renamed['Marca'].nunique()
+col2.metric(label = '**Quantidade de marcas**', value = brands_quantity)
 
 # KPI 3: Preço médio:
-average_price = df['new_price'].mean().round(2)
-col3.metric(label = 'Preço médio atual (R$)', value = average_price)
+average_price = df_renamed['Preço atual'].mean().round(2)
+col3.metric(label = '**Preço médio atual de headphones (R$)**', value = average_price)
 
-# Marcas mais encontradas até a 10ª página
-st.subheader('Marcas mais encontradas até a 10ª página')
+# Gráficos e tabelas:
+# Marcas mais encontradas
+st.subheader('Marcas mais encontradas',divider='rainbow')
 col1,col2 = st.columns([4, 2])
-top_10_pages_brands = df['product_brand'].value_counts().sort_values(ascending=False)
-col1.bar_chart(top_10_pages_brands)
-col1.write(top_10_pages_brands)
+top_10_pages_brands = df_renamed['Marca'].value_counts(ascending=False)
+col1.bar_chart(top_10_pages_brands.head(20))
+col2.write(top_10_pages_brands)
 
 # Preço médio por marca
-st.subheader('Preço médio por marca até a 10ª página')
+st.subheader('Preço médio por marca',divider='rainbow')
+st.markdown('''Preço médio das 10 marcas com mais anúncios encontrados''')
 col1,col2 = st.columns([4, 2])
-average_price_by_brand = df.groupby('product_brand')['new_price'].mean().sort_values(ascending=False).round(2)
-col1.bar_chart(average_price_by_brand)
-col1.write(average_price_by_brand)
+df_avg_price = df_renamed.groupby('Marca')['Preço atual'].mean().sort_values(ascending=False).round(2)
+df_quantity_items = df_renamed['Marca'].value_counts().sort_values(ascending=False)
+avg_price_by_brand = pd.merge(df_avg_price, df_quantity_items, on='Marca', how='left').sort_values(by='count',ascending=False).rename(columns={'count':'Anúncios','Preço atual':'Preço médio'})
+col1.bar_chart(avg_price_by_brand.drop(columns=['Anúncios']).head(10))
+col2.write(avg_price_by_brand)
 
 # Satifação por marca
-st.subheader('Satifação por marca')
+st.subheader('Satifação por marca',divider='rainbow')
+st.markdown('''Pontuação de reviews das 10 marcas com mais anúncios encontrados''')
 col1,col2 = st.columns([4, 2])
-df_non_zero_reviews = df[df['reviews_score']>0]
-satisfaction_by_brand = df_non_zero_reviews.groupby('product_brand')['reviews_score'].mean().sort_values(ascending=False).round(2)
-col1.bar_chart(satisfaction_by_brand)
-col1.write(satisfaction_by_brand)
+df_non_zero_reviews = df_renamed[df_renamed['Pontuação de reviews']>0]
+df_avg_score = df_non_zero_reviews.groupby('Marca')['Pontuação de reviews'].mean().sort_values(ascending=False).round(2)
+satisfaction_by_brand = pd.merge(df_avg_score, df_quantity_items, on='Marca', how='left').sort_values(by='count',ascending=False).head(10).rename(columns={'count':'Anúncios'})
+col1.bar_chart(satisfaction_by_brand.drop(columns=['Anúncios']))
+col2.write(satisfaction_by_brand)
 
 
