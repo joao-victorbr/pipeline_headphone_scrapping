@@ -6,7 +6,7 @@ class MagazineluizaSpider(scrapy.Spider):
     allowed_domains = ["www.magazineluiza.com.br"]
     start_urls = ["https://www.magazineluiza.com.br/busca/headphone/?from=submit"]
     page_count = 1
-    max_page = 5
+    max_page = 10
 
     def parse(self, response):
         products_list = response.css('a.sc-eBMEME.uPWog.sc-gZfzYS.lndZOc.sc-gZfzYS.lndZOc')
@@ -42,3 +42,6 @@ class MagazineluizaSpider(scrapy.Spider):
             print('')
             if next_page_url:
                 yield scrapy.Request(url=next_page_url, callback=self.parse)
+        
+        else:
+            print(f'\nScrapping da página {self.page_count} concluído.\n')

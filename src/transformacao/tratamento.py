@@ -22,8 +22,6 @@ df['src'] = df['src'].astype('string')
 df['reviews_score'] = df['reviews_score'].fillna(0.0).astype('float')
 df['reviews_quantity'] = df['reviews_quantity'].fillna(0).astype('int')
 
-# print(df.loc[df['product_name'] == 'Headphone Bluetooth JBL Tour One M2 Preto'])
-
 # Conectar ao banco de dados SQLite:
 conn = sqlite3.connect('/home/joao-vicbr/pipeline_headphone_scrapping/data/quotes.db')
 
@@ -32,6 +30,3 @@ df.to_sql('magazineluiza_items', conn, if_exists='replace', index=False)
 
 # Fechar conexão com o banco de dados:
 conn.close()
-
-print(df.head())
-
