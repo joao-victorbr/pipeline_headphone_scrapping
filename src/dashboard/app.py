@@ -48,7 +48,7 @@ col3.metric(label = '**Preço médio atual de headphones (R$)**', value = averag
 st.subheader('Marcas mais encontradas',divider='rainbow')
 col1,col2 = st.columns([4, 2])
 top_10_pages_brands = df_renamed['Marca'].value_counts(ascending=False)
-col1.bar_chart(top_10_pages_brands.head(15))
+col1.bar_chart(top_10_pages_brands.head(15),x_label='Marca', y_label='Quantidade de anúncios')
 col2.write(top_10_pages_brands)
 
 # Preço médio por marca
@@ -58,7 +58,7 @@ col1,col2 = st.columns([4, 2])
 df_avg_price = df_renamed.groupby('Marca')['Preço atual (R$)'].mean().sort_values(ascending=False).round(2)
 df_quantity_items = df_renamed['Marca'].value_counts().sort_values(ascending=False)
 avg_price_by_brand = pd.merge(df_avg_price, df_quantity_items, on='Marca', how='left').sort_values(by='count',ascending=False).rename(columns={'count':'Anúncios','Preço atual (R$)':'Preço médio (R$)'})
-col1.bar_chart(avg_price_by_brand.drop(columns=['Anúncios']).head(10))
+col1.bar_chart(avg_price_by_brand.drop(columns=['Anúncios']).head(10),x_label='Marca', y_label='Preço médio (R$)')
 col2.write(avg_price_by_brand)
 
 # Satifação por marca
@@ -68,7 +68,7 @@ col1,col2 = st.columns([4, 2])
 df_non_zero_reviews = df_renamed[df_renamed['Pontuação de reviews']>0]
 df_avg_score = df_non_zero_reviews.groupby('Marca')['Pontuação de reviews'].mean().sort_values(ascending=False).round(2)
 satisfaction_by_brand = pd.merge(df_avg_score, df_quantity_items, on='Marca', how='left').sort_values(by='count',ascending=False).head(10).rename(columns={'count':'Anúncios'})
-col1.bar_chart(satisfaction_by_brand.drop(columns=['Anúncios']), horizontal=True)
+col1.bar_chart(satisfaction_by_brand.drop(columns=['Anúncios']), horizontal=True,x_label='Pontuação média por review', y_label='Marca')
 col2.write(satisfaction_by_brand)
 
 # Produtos com maiores descontos
