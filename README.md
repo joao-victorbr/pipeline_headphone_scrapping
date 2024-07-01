@@ -12,9 +12,9 @@ O projeto deve avaliar os seguintes pontos:
 Os resultados devem ser exibidos em um dashboard com informações originadas de um banco de dados.
 
 ### Processo da pipeline
-A ETL começa a partir de um processo de webscrapping feito com a biblioteca Scrapy. Os dados coletados geram um arquivo .jsonl;
-Em seguida, os dados coletados são tratados e enriquecidos com a biblioteca Pandas. O tratamento resulta em uma saída para um banco de dados com o uso da biblioteca SQLite3.
-Por último, os dados são lidos do arquivo .db e carregados em um dashboard com a utilização da Streamlit.
+- A ETL começa a partir de um processo de webscrapping feito com a biblioteca Scrapy. Os dados coletados geram um arquivo .jsonl;
+- Em seguida, os dados coletados são tratados e enriquecidos com a biblioteca Pandas. O tratamento resulta em uma saída para um banco de dados com o uso da biblioteca SQLite3.
+- Por último, os dados são lidos do arquivo .db e carregados em um dashboard com a utilização da Streamlit.
 
 ### Execução:
 Para rodar o web scrapping:
