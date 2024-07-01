@@ -26,9 +26,6 @@ df_renamed = df.rename(columns=renamming)
 st.title('Pesquisa de mercado - Headphones no Magazineluiza')
 st.subheader('KPIs principais da pesquisa',divider='rainbow')
 
-# # Exibir df inicial em tela
-# st.write(df)
-
 col1, col2, col3 = st.columns(3)
 
 # KPI 1: Número total de registros
@@ -64,22 +61,18 @@ col2.write(avg_price_by_brand)
 
 # Satifação por marca
 st.subheader('Satifação por marca',divider='rainbow')
-st.markdown('''Pontuação de reviews das 10 marcas com mais anúncios encontrados''')
+st.markdown('''Pontuação média de reviews das 10 marcas com mais anúncios encontrados''')
 col1,col2 = st.columns([4, 2])
 df_non_zero_reviews = df_renamed[df_renamed['Pontuação de reviews']>0]
 df_avg_score = df_non_zero_reviews.groupby('Marca')['Pontuação de reviews'].mean().sort_values(ascending=False).round(2)
-satisfaction_by_brand = pd.merge(df_avg_score, df_quantity_items, on='Marca', how='left').sort_values(by='count',ascending=False).head(10).rename(columns={'count':'Anúncios'})
+satisfaction_by_brand = pd.merge(df_avg_score, df_quantity_items, on='Marca', how='left').sort_values(by='count',ascending=False).head(10).rename(columns={'count':'Anúncios','Pontuação de reviews':'Pontuação média por review'})
 col1.bar_chart(satisfaction_by_brand.drop(columns=['Anúncios']), horizontal=True,x_label='Pontuação média por review', y_label='Marca')
 col2.write(satisfaction_by_brand)
 
 # Produtos com maiores descontos
 st.subheader('Produtos com maiores descontos',divider='rainbow')
-st.markdown('''Produtos com maiores descontos''')
-# col1,col2 = st.columns([4, 2])
 df_without_discounts = df_renamed[df_renamed['Desconto (%)']>0.0]
 discount_by_brand = df_without_discounts.sort_values('Desconto (%)',ascending=False).drop_duplicates(subset=['Nome do produto']) # para remover anúncios repetidos para cores diferentes do mesmo headphone
-# col1.bar_chart(discount_by_brand.head(10),x='Marca', y='Desconto (%)', horizontal=True)
-# col2.write(discount_by_brand[['Marca','Nome do produto','Desconto (%)','Preço antigo (R$)','Preço atual (R$)','url_product']])
 st.data_editor(
     discount_by_brand[['Marca','Nome do produto','Desconto (%)','Preço antigo (R$)','Preço atual (R$)','url_product']],
     column_config={
@@ -89,6 +82,5 @@ st.data_editor(
     },
     hide_index=True,
 )
-# col2.data_editor
 
 

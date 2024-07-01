@@ -20,11 +20,13 @@ Os resultados devem ser exibidos em um dashboard com informações originadas de
 - Por último, os dados são lidos do arquivo .db e carregados em um dashboard com a utilização da biblioteca Streamlit.
 
 ### Execução:
-Para rodar o web scrapping:
+- Para rodar o web scrapping:
 ``scrapy crawl magazineluiza -o ../data/data_extracted.jsonl``
 
-Para rodar o tratamento:
+- Para rodar o tratamento:
 ``python transformacao/tratamento.py``
 
-Para rodar o dashboard:
+- Para rodar o dashboard:
 ``streamlit run ../src/dashboard/app.py``
+    Obs.: O output do comando acima exibe um link de localhost. Pressione "ctrl + click" para exibir o dashboard no navegador.
+
