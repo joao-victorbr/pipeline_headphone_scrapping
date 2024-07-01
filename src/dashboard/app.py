@@ -47,6 +47,7 @@ col3.metric(label = '**Preço médio atual de headphones (R$)**', value = averag
 # Marcas mais encontradas
 st.subheader('Marcas mais encontradas',divider='rainbow')
 col1,col2 = st.columns([4, 2])
+df_renamed['Anúncios'] = df_renamed.groupby('Marca')['Marca'].transform('count')
 top_10_pages_brands = df_renamed['Marca'].value_counts(ascending=False)
 col1.bar_chart(top_10_pages_brands.head(15),x_label='Marca', y_label='Quantidade de anúncios')
 col2.write(top_10_pages_brands)
