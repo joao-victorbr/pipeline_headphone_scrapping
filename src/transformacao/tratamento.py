@@ -4,7 +4,7 @@ import sqlite3
 from datetime import datetime
 
 # Definir caminho do arquivo csv
-df = pd.read_json('/home/joao-vicbr/pipeline_headphone_scrapping/data/data_extracted.jsonl',lines=True)
+df = pd.read_json('../data/data_extracted.jsonl',lines=True)
 
 # Configurar pandas para exibir todas as colunas:
 pd.options.display.max_columns = None
@@ -32,7 +32,7 @@ df = df[df['product_brand']!='headphone']
 df['discount'] = (((df['old_price'] - df['new_price']) / df['old_price']) * 100).round(1).astype('float')
 
 # Conectar ao banco de dados SQLite:
-conn = sqlite3.connect('/home/joao-vicbr/pipeline_headphone_scrapping/data/quotes.db')
+conn = sqlite3.connect('../data/quotes.db')
 
 # Salvar dataframe no banco SQLite:
 df.to_sql('magazineluiza_items', conn, if_exists='replace', index=False)

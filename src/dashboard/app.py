@@ -3,7 +3,7 @@ import pandas as pd
 import sqlite3
 
 # Conectar ao banco de dados SQLite
-conn = sqlite3.connect('/home/joao-vicbr/pipeline_headphone_scrapping/data/quotes.db')
+conn = sqlite3.connect('../data/quotes.db')
 
 # Carregar dados da tabela do banco em um dataframe pandas
 df = pd.read_sql_query('SELECT * FROM magazineluiza_items', conn)
