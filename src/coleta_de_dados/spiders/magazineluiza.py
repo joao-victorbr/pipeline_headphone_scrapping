@@ -30,7 +30,8 @@ class MagazineluizaSpider(scrapy.Spider):
                 'reviews_score':reviews_score,
                 'reviews_quantity':reviews_quantity if reviews_score else None,
                 'old_price':old_price,
-                'new_price':product.css("p.sc-kpDqfm.eCPtRw.sc-bOhtcR.dOwMgM::text").get().replace('R$\xa0','').replace('.','').replace(',','.')
+                'new_price':product.css("p.sc-kpDqfm.eCPtRw.sc-bOhtcR.dOwMgM::text").get().replace('R$\xa0','').replace('.','').replace(',','.'),
+                'url_product':'https://www.magazineluiza.com.br/'+product.css("a::attr(href)").get(),
             }
 
         if self.page_count < self.max_page:

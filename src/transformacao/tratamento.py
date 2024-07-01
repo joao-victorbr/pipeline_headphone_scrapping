@@ -9,6 +9,9 @@ df = pd.read_json('/home/joao-vicbr/pipeline_headphone_scrapping/data/data_extra
 # Configurar pandas para exibir todas as colunas:
 pd.options.display.max_columns = None
 
+# Descartas linhas duplicadas:
+df = df.drop_duplicates()
+
 # Novas colunas:
 df['src'] = 'https://www.magazineluiza.com.br/busca/headphone/?from=submit'
 df['data_coleta'] = datetime.now()
@@ -21,6 +24,12 @@ df['product_name'] = df['product_name'].astype('string')
 df['src'] = df['src'].astype('string')
 df['reviews_score'] = df['reviews_score'].fillna(0.0).astype('float')
 df['reviews_quantity'] = df['reviews_quantity'].fillna(0).astype('int')
+
+# Uma marca foi coletada como "headphone". Para retirar esse dado incorreto, será feito um filtro:
+df = df[df['product_brand']!='headphone']
+
+# Coluna de desconto:
+df['discount'] = (((df['old_price'] - df['new_price']) / df['old_price']) * 100).round(1).astype('float')
 
 # Conectar ao banco de dados SQLite:
 conn = sqlite3.connect('/home/joao-vicbr/pipeline_headphone_scrapping/data/quotes.db')

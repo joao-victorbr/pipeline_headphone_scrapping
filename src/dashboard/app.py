@@ -16,8 +16,9 @@ renamming = {
     'product_name':'Nome do produto',
     'reviews_score':'Pontuação de reviews',
     'reviews_quantity':'Número de reviews',
-    'old_price':'Preço antigo',
-    'new_price':'Preço atual',
+    'old_price':'Preço antigo (R$)',
+    'new_price':'Preço atual (R$)',
+    'discount':'Desconto (%)',
 }
 df_renamed = df.rename(columns=renamming)
 
@@ -39,7 +40,7 @@ brands_quantity = df_renamed['Marca'].nunique()
 col2.metric(label = '**Quantidade de marcas**', value = brands_quantity)
 
 # KPI 3: Preço médio:
-average_price = df_renamed['Preço atual'].mean().round(2)
+average_price = df_renamed['Preço atual (R$)'].mean().round(2)
 col3.metric(label = '**Preço médio atual de headphones (R$)**', value = average_price)
 
 # Gráficos e tabelas:
@@ -47,16 +48,16 @@ col3.metric(label = '**Preço médio atual de headphones (R$)**', value = averag
 st.subheader('Marcas mais encontradas',divider='rainbow')
 col1,col2 = st.columns([4, 2])
 top_10_pages_brands = df_renamed['Marca'].value_counts(ascending=False)
-col1.bar_chart(top_10_pages_brands.head(20))
+col1.bar_chart(top_10_pages_brands.head(15))
 col2.write(top_10_pages_brands)
 
 # Preço médio por marca
 st.subheader('Preço médio por marca',divider='rainbow')
 st.markdown('''Preço médio das 10 marcas com mais anúncios encontrados''')
 col1,col2 = st.columns([4, 2])
-df_avg_price = df_renamed.groupby('Marca')['Preço atual'].mean().sort_values(ascending=False).round(2)
+df_avg_price = df_renamed.groupby('Marca')['Preço atual (R$)'].mean().sort_values(ascending=False).round(2)
 df_quantity_items = df_renamed['Marca'].value_counts().sort_values(ascending=False)
-avg_price_by_brand = pd.merge(df_avg_price, df_quantity_items, on='Marca', how='left').sort_values(by='count',ascending=False).rename(columns={'count':'Anúncios','Preço atual':'Preço médio'})
+avg_price_by_brand = pd.merge(df_avg_price, df_quantity_items, on='Marca', how='left').sort_values(by='count',ascending=False).rename(columns={'count':'Anúncios','Preço atual (R$)':'Preço médio (R$)'})
 col1.bar_chart(avg_price_by_brand.drop(columns=['Anúncios']).head(10))
 col2.write(avg_price_by_brand)
 
@@ -67,7 +68,26 @@ col1,col2 = st.columns([4, 2])
 df_non_zero_reviews = df_renamed[df_renamed['Pontuação de reviews']>0]
 df_avg_score = df_non_zero_reviews.groupby('Marca')['Pontuação de reviews'].mean().sort_values(ascending=False).round(2)
 satisfaction_by_brand = pd.merge(df_avg_score, df_quantity_items, on='Marca', how='left').sort_values(by='count',ascending=False).head(10).rename(columns={'count':'Anúncios'})
-col1.bar_chart(satisfaction_by_brand.drop(columns=['Anúncios']))
+col1.bar_chart(satisfaction_by_brand.drop(columns=['Anúncios']), horizontal=True)
 col2.write(satisfaction_by_brand)
+
+# Produtos com maiores descontos
+st.subheader('Produtos com maiores descontos',divider='rainbow')
+st.markdown('''Produtos com maiores descontos''')
+# col1,col2 = st.columns([4, 2])
+df_without_discounts = df_renamed[df_renamed['Desconto (%)']>0.0]
+discount_by_brand = df_without_discounts.sort_values('Desconto (%)',ascending=False).drop_duplicates(subset=['Nome do produto']) # para remover anúncios repetidos para cores diferentes do mesmo headphone
+# col1.bar_chart(discount_by_brand.head(10),x='Marca', y='Desconto (%)', horizontal=True)
+# col2.write(discount_by_brand[['Marca','Nome do produto','Desconto (%)','Preço antigo (R$)','Preço atual (R$)','url_product']])
+st.data_editor(
+    discount_by_brand[['Marca','Nome do produto','Desconto (%)','Preço antigo (R$)','Preço atual (R$)','url_product']],
+    column_config={
+        "url_product": st.column_config.LinkColumn(
+            "Link do produto", display_text="Link"
+        ),
+    },
+    hide_index=True,
+)
+# col2.data_editor
 
 
