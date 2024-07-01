@@ -12,9 +12,12 @@ O projeto deve avaliar os seguintes pontos:
 Os resultados devem ser exibidos em um dashboard com informações originadas de um banco de dados.
 
 ### Processo da pipeline
-- A ETL começa a partir de um processo de webscrapping feito com a biblioteca Scrapy. Os dados coletados geram um arquivo .jsonl;
+
+![ETL pipeline heaphone](https://github.com/joao-victorbr/pipeline_headphone_scrapping/assets/96805016/c94bdad7-749d-45b3-919b-325a5289a413)
+
+- A pipeline começa a partir de um processo de webscrapping feito com a biblioteca Scrapy. Os dados coletados geram um arquivo .jsonl;
 - Em seguida, os dados coletados são tratados e enriquecidos com a biblioteca Pandas. O tratamento resulta em uma saída para um banco de dados com o uso da biblioteca SQLite3.
-- Por último, os dados são lidos do arquivo .db e carregados em um dashboard com a utilização da Streamlit.
+- Por último, os dados são lidos do arquivo .db e carregados em um dashboard com a utilização da biblioteca Streamlit.
 
 ### Execução:
 Para rodar o web scrapping:
