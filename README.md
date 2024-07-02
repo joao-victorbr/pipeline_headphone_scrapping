@@ -30,3 +30,4 @@ Os resultados devem ser exibidos em um dashboard com informações originadas de
 ``streamlit run ../src/dashboard/app.py``
     Obs.: O output do comando acima exibe um link de localhost. Pressione "ctrl + click" para exibir o dashboard no navegador.
 
+Obs.: Com o passar do tempo após a publicação desse código, é possível que o html da página de busca se modifique pelos criadores. Isso ocasionará em erro da etapa de coleta de dados do site. Nesse caso, a etapa de web scrapping deve ser atualizada.
