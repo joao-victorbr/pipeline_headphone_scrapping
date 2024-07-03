@@ -20,15 +20,16 @@ Os resultados devem ser exibidos em um dashboard com informações originadas de
 - Por último, os dados são lidos do arquivo .db e carregados em um dashboard com a utilização da biblioteca Streamlit.
 
 ### Execução:
-- Para rodar o web scrapping:
+- Para executar o web scrapping:
 ``scrapy crawl magazineluiza -o ../data/data_extracted.jsonl``
 
-- Para rodar o tratamento:
+- Para executar o tratamento:
 ``python transformacao/tratamento.py``
 
-- Para rodar o dashboard:
+- Para executar o dashboard:
 ``streamlit run ../src/dashboard/app.py``
-    Obs.: O output do comando acima exibe um link de localhost. Pressione "ctrl + click" para exibir o dashboard no navegador.
+
+Obs.: O output do comando acima exibe um link de localhost. Pressione "ctrl + click" para gerar o dashboard no navegador.
   
 ### Demonstração do dashboard 
 https://github.com/joao-victorbr/pipeline_headphone_scrapping/assets/96805016/6546c31a-59a8-4776-a7cb-cddec61b7948
