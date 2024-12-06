@@ -13,7 +13,7 @@ Os resultados devem ser exibidos em um dashboard com informações originadas de
 
 ### Processo da pipeline
 
-![ETL pipeline heaphone](https://github.com/joao-victorbr/pipeline_headphone_scrapping/assets/96805016/c94bdad7-749d-45b3-919b-325a5289a413)
+![Imagem github](https://github.com/user-attachments/assets/f4e6b783-b71b-478d-ad14-5d00037c274c)
 
 - A pipeline começa a partir de um processo de webscrapping feito com a biblioteca Scrapy. Os dados coletados geram um arquivo .jsonl;
 - Em seguida, os dados coletados são tratados e enriquecidos com a biblioteca Pandas. O tratamento resulta em uma saída para um banco de dados com o uso da biblioteca SQLite3.
